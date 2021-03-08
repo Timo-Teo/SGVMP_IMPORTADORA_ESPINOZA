@@ -42,6 +42,10 @@ public class ActualizarDatoCliente extends javax.swing.JFrame {
 
         jLabel1.setText("Actual");
 
+        txtActual.setEditable(false);
+        txtActual.setDragEnabled(true);
+        txtActual.setEnabled(false);
+
         jLabel2.setText("Nuevo");
 
         btnActualizarCliente.setText("Actualizar Cliente");

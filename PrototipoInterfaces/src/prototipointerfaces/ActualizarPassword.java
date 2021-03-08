@@ -47,6 +47,10 @@ public class ActualizarPassword extends javax.swing.JFrame {
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "Resetear"));
 
+        txtNuevaPasswordRP.setEditable(false);
+        txtNuevaPasswordRP.setDragEnabled(true);
+        txtNuevaPasswordRP.setEnabled(false);
+
         jLabel6.setText("Nueva Password");
 
         btnConfirmarReseteo.setText("Confirmar");
