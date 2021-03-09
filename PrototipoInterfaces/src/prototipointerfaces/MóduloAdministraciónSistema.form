@@ -44,8 +44,8 @@
         <Container class="javax.swing.JPanel" name="jPanel1">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Crear Perfil de Usuario">
-                <Property name="tabTitle" type="java.lang.String" value="Crear Perfil de Usuario"/>
+              <JTabbedPaneConstraints tabName="Crear Usuario">
+                <Property name="tabTitle" type="java.lang.String" value="Crear Usuario"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -312,7 +312,7 @@
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="3" rowCount="4">
                             <Column editable="true" title="Nombre" type="java.lang.String"/>
-                            <Column editable="true" title="Tipo de Empleado" type="java.lang.String"/>
+                            <Column editable="true" title="Tipo de Usuario" type="java.lang.String"/>
                             <Column editable="true" title="Usuario" type="java.lang.String"/>
                           </Table>
                         </Property>
@@ -474,7 +474,7 @@
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                           <Table columnCount="3" rowCount="4">
                             <Column editable="true" title="Nombre" type="java.lang.String"/>
-                            <Column editable="true" title="Tipo de Empleado" type="java.lang.String"/>
+                            <Column editable="true" title="Tipo de Usuario" type="java.lang.String"/>
                             <Column editable="true" title="Password" type="java.lang.String"/>
                           </Table>
                         </Property>

@@ -164,7 +164,7 @@ public class MóduloAdministraciónSistema extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Crear Perfil de Usuario", jPanel1);
+        jTabbedPane1.addTab("Crear Usuario", jPanel1);
 
         btnAtrasCU.setText("Atrás");
         btnAtrasCU.addActionListener(new java.awt.event.ActionListener() {
@@ -192,7 +192,7 @@ public class MóduloAdministraciónSistema extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Nombre", "Tipo de Empleado", "Usuario"
+                "Nombre", "Tipo de Usuario", "Usuario"
             }
         ) {
             Class[] types = new Class [] {
@@ -289,7 +289,7 @@ public class MóduloAdministraciónSistema extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Nombre", "Tipo de Empleado", "Password"
+                "Nombre", "Tipo de Usuario", "Password"
             }
         ) {
             Class[] types = new Class [] {
