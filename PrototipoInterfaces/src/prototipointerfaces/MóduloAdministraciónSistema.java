@@ -105,7 +105,7 @@ public class MóduloAdministraciónSistema extends javax.swing.JFrame {
 
         jLabel8.setText("C.I.");
 
-        jLabel9.setText("Tipo de Empleado");
+        jLabel9.setText("Tipo de Usuario");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -192,7 +192,7 @@ public class MóduloAdministraciónSistema extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Nombre", "Tipo de Empleado", "Usuario"
+                "Nombre", "Tipo de Usuario", "Usuario"
             }
         ) {
             Class[] types = new Class [] {
@@ -289,7 +289,7 @@ public class MóduloAdministraciónSistema extends javax.swing.JFrame {
                 {null, null, null}
             },
             new String [] {
-                "Nombre", "Tipo de Empleado", "Password"
+                "Nombre", "Tipo de Usuario", "Password"
             }
         ) {
             Class[] types = new Class [] {
@@ -456,7 +456,7 @@ public class MóduloAdministraciónSistema extends javax.swing.JFrame {
 
         cmbTipoUsuarioRP.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar...", "Vendedor de Mostrador", "Encargado de Bodega" }));
 
-        jLabel11.setText("Tipo de Empleado");
+        jLabel11.setText("Tipo de Usuario");
 
         javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
         jPanel13.setLayout(jPanel13Layout);
@@ -473,7 +473,7 @@ public class MóduloAdministraciónSistema extends javax.swing.JFrame {
                     .addComponent(cmbTipoUsuarioRP, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtUsuarioRP, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCedulaUsuarioRP, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(115, Short.MAX_VALUE))
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
