@@ -44,7 +44,7 @@ public class Login extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Gerente General", "Vendedor de Mostrador", "Encargado de Bodega" }));
+        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar...", "Gerente General", "Vendedor de Mostrador", "Encargado de Bodega" }));
 
         jLabel1.setText("Usuario");
 

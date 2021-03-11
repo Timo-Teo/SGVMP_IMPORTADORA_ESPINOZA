@@ -37,14 +37,14 @@ public class GerenteGeneral extends javax.swing.JFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "¿Qué desea hacer?"));
 
-        btnModuloEmpleados.setText("Módulo Empleados");
+        btnModuloEmpleados.setText("Ingresar al Módulo Empleados");
         btnModuloEmpleados.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModuloEmpleadosActionPerformed(evt);
             }
         });
 
-        btnModuloAdministracionSistema.setText("Módulo Administración del Sistema");
+        btnModuloAdministracionSistema.setText("Ingresar al Módulo Administración del Sistema");
         btnModuloAdministracionSistema.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModuloAdministracionSistemaActionPerformed(evt);
@@ -56,7 +56,7 @@ public class GerenteGeneral extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnModuloEmpleados)
                 .addGap(28, 28, 28)
                 .addComponent(btnModuloAdministracionSistema)
