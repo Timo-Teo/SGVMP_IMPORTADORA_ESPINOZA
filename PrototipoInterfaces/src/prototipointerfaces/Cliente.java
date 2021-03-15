@@ -97,7 +97,10 @@ public class Cliente {
                 }
                 break;
             case "RUC":
-                // 1719087999001
+                String RUC = validarCedula(this.numDoc) + "001";
+                if (RUC.equals("xxxxxxxxxx001")){
+                    return false;
+                }
                 break;
             case "Pasaporte":
                 String passport = validarCedula(this.numDoc);
