@@ -5,20 +5,28 @@
  */
 package prototipointerfaces;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.PreparedStatement;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author santiago
  */
 public class MóduloClientes extends javax.swing.JFrame {
-        
-        
+
+    Cliente nuevoCliente = new Cliente();
+    static Cliente nuevoClienteA = new Cliente();
+    static String campoActualizar;
+    
+
     /**
      * Creates new form Interfaz
      */
     public MóduloClientes() {
         initComponents();
         setLocationRelativeTo(null);
-        
+
     }
 
     /**
@@ -193,7 +201,7 @@ public class MóduloClientes extends javax.swing.JFrame {
 
         jLabel4.setText("Tipo de documento");
 
-        cmbTipoDocumentoAC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "RUC", "C.I.", "Pasaporte" }));
+        cmbTipoDocumentoAC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar...", "RUC", "C.I.", "Pasaporte" }));
 
         jLabel8.setText("Número de documento");
 
@@ -468,7 +476,188 @@ public class MóduloClientes extends javax.swing.JFrame {
 
     private void btnRegistrarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarClienteActionPerformed
         // TODO add your handling code here:
-        
+        String nombre;
+        String apellido;
+        String tipoDoc;
+        String numDoc;
+        String telf;
+        String direccion;
+        String correo;
+        String estado;
+        if (txtNombreRC.getText().equals("")
+                || txtApellidoRC.getText().equals("")
+                || txtNumDocumentoRC.getText().equals("")
+                || txtTelCelRC.getText().equals("")
+                || txtDireccionRC.getText().equals("")
+                || txtCorreoRC.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Para registrar un cliente debe llenar TODOS los campos", "Error", JOptionPane.WARNING_MESSAGE);
+        } else {
+            Conexion con = new Conexion();
+            Connection cn = (Connection) con.conexion();
+            try {
+                PreparedStatement pps = (PreparedStatement) cn.prepareStatement("INSERT INTO clientes(Nombre,Apellido,Tipo_de_Documento,Numero_de_Documento,Telefono_Celular,Direccion,Correo_Electronico,Estado) VALUES(?,?,?,?,?,?,?,?)");
+
+                nombre = txtNombreRC.getText();
+                if (!nuevoCliente.esNombreValido(nombre)) {
+                    JOptionPane.showMessageDialog(null, "Nombre incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    nuevoCliente.nombre = nombre;
+                    apellido = txtApellidoRC.getText();
+                    if (!nuevoCliente.esApellidoValido(apellido)) {
+                        JOptionPane.showMessageDialog(null, "Apellido incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        nuevoCliente.apellido = apellido;
+                        tipoDoc = String.valueOf(cmbTipoDocumentoRC.getSelectedItem());
+                        nuevoCliente.tipoDoc = tipoDoc;
+                        switch (tipoDoc) {
+                            case "C.I.":
+                                numDoc = txtNumDocumentoRC.getText();
+                                if (numDoc.length() < 10) {
+                                    JOptionPane.showMessageDialog(null, "Número de cédula invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                                } else {
+                                    nuevoCliente.numDoc = numDoc;
+                                    if (!nuevoCliente.esDocumentoValido()) {
+                                        JOptionPane.showMessageDialog(null, "Cédula incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                                    } else {
+                                        telf = txtTelCelRC.getText();
+                                        if (!nuevoCliente.esTelefonoValido(telf)) {
+                                            JOptionPane.showMessageDialog(null, "Teléfono incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                                        } else {
+                                            nuevoCliente.telf = telf;
+                                            direccion = txtDireccionRC.getText();
+                                            if (!nuevoCliente.esDireccionValido(direccion)) {
+                                                JOptionPane.showMessageDialog(null, "Direccion incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                                            } else {
+                                                nuevoCliente.direccion = direccion;
+                                                correo = txtCorreoRC.getText();
+                                                if (!nuevoCliente.esCorreoValido(correo)) {
+                                                    JOptionPane.showMessageDialog(null, "Correo incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                                                } else {
+                                                    nuevoCliente.correo = correo;
+                                                    nuevoCliente.estado = "Activo";
+                                                    pps.setString(1, nuevoCliente.nombre);
+                                                    pps.setString(2, nuevoCliente.apellido);
+                                                    pps.setString(3, nuevoCliente.tipoDoc);
+                                                    pps.setString(4, nuevoCliente.numDoc);
+                                                    pps.setString(5, nuevoCliente.telf);
+                                                    pps.setString(6, nuevoCliente.direccion);
+                                                    pps.setString(7, nuevoCliente.correo);
+                                                    pps.setString(8, nuevoCliente.estado);
+
+                                                    int a = pps.executeUpdate();
+                                                    if (a > 0) {
+                                                        JOptionPane.showMessageDialog(null, "Registro Ingresado con Exito");
+                                                    } else {
+                                                        JOptionPane.showMessageDialog(null, "ERROR", "Error", JOptionPane.WARNING_MESSAGE);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                            case "Pasaporte":
+                                numDoc = txtNumDocumentoRC.getText();
+                                if (numDoc.length() < 10) {
+                                    JOptionPane.showMessageDialog(null, "Pasaporte invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                                } else {
+                                    nuevoCliente.numDoc = numDoc;
+                                    if (!nuevoCliente.esDocumentoValido()) {
+                                        JOptionPane.showMessageDialog(null, "Pasaporte incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                                    } else {
+                                        telf = txtTelCelRC.getText();
+                                        if (!nuevoCliente.esTelefonoValido(telf)) {
+                                            JOptionPane.showMessageDialog(null, "Teléfono incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                                        } else {
+                                            nuevoCliente.telf = telf;
+                                            direccion = txtDireccionRC.getText();
+                                            if (!nuevoCliente.esDireccionValido(direccion)) {
+                                                JOptionPane.showMessageDialog(null, "Direccion incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                                            } else {
+                                                nuevoCliente.direccion = direccion;
+                                                correo = txtCorreoRC.getText();
+                                                if (!nuevoCliente.esCorreoValido(correo)) {
+                                                    JOptionPane.showMessageDialog(null, "Correo incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                                                } else {
+                                                    nuevoCliente.correo = correo;
+                                                    nuevoCliente.estado = "Activo";
+                                                    pps.setString(1, nuevoCliente.nombre);
+                                                    pps.setString(2, nuevoCliente.apellido);
+                                                    pps.setString(3, nuevoCliente.tipoDoc);
+                                                    pps.setString(4, nuevoCliente.numDoc);
+                                                    pps.setString(5, nuevoCliente.telf);
+                                                    pps.setString(6, nuevoCliente.direccion);
+                                                    pps.setString(7, nuevoCliente.correo);
+                                                    pps.setString(8, nuevoCliente.estado);
+
+                                                    int a = pps.executeUpdate();
+                                                    if (a > 0) {
+                                                        JOptionPane.showMessageDialog(null, "Registro Ingresado con Exito");
+                                                    } else {
+                                                        JOptionPane.showMessageDialog(null, "ERROR", "Error", JOptionPane.WARNING_MESSAGE);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                            case "RUC":
+                                numDoc = txtNumDocumentoRC.getText();
+                                if (numDoc.length() < 10) {
+                                    JOptionPane.showMessageDialog(null, "Número de RUC invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                                } else {
+                                    nuevoCliente.numDoc = numDoc;
+                                    if (!nuevoCliente.esDocumentoValido()) {
+                                        JOptionPane.showMessageDialog(null, "RUC incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                                    } else {
+                                        telf = txtTelCelRC.getText();
+                                        if (!nuevoCliente.esTelefonoValido(telf)) {
+                                            JOptionPane.showMessageDialog(null, "Teléfono incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                                        } else {
+                                            nuevoCliente.telf = telf;
+                                            direccion = txtDireccionRC.getText();
+                                            if (!nuevoCliente.esDireccionValido(direccion)) {
+                                                JOptionPane.showMessageDialog(null, "Direccion incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                                            } else {
+                                                nuevoCliente.direccion = direccion;
+                                                correo = txtCorreoRC.getText();
+                                                if (!nuevoCliente.esCorreoValido(correo)) {
+                                                    JOptionPane.showMessageDialog(null, "Correo incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                                                } else {
+                                                    nuevoCliente.correo = correo;
+                                                    nuevoCliente.estado = "Activo";
+                                                    pps.setString(1, nuevoCliente.nombre);
+                                                    pps.setString(2, nuevoCliente.apellido);
+                                                    pps.setString(3, nuevoCliente.tipoDoc);
+                                                    pps.setString(4, nuevoCliente.numDoc);
+                                                    pps.setString(5, nuevoCliente.telf);
+                                                    pps.setString(6, nuevoCliente.direccion);
+                                                    pps.setString(7, nuevoCliente.correo);
+                                                    pps.setString(8, nuevoCliente.estado);
+
+                                                    int a = pps.executeUpdate();
+                                                    if (a > 0) {
+                                                        JOptionPane.showMessageDialog(null, "Registro Ingresado con Exito");
+                                                    } else {
+                                                        JOptionPane.showMessageDialog(null, "ERROR", "Error", JOptionPane.WARNING_MESSAGE);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                System.err.println("Error: " + e);
+            }
+        }
+
+
     }//GEN-LAST:event_btnRegistrarClienteActionPerformed
 
     private void btnAtrasRCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtrasRCActionPerformed
@@ -501,9 +690,78 @@ public class MóduloClientes extends javax.swing.JFrame {
 
     private void btnSiguienteACActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteACActionPerformed
         // TODO add your handling code here:
+        
+        Conexion con = new Conexion();
+        Connection cn = (Connection) con.conexion();
+        
+        
+        try {
+            String tipoDoc = String.valueOf(cmbTipoDocumentoAC);
+            switch(tipoDoc){
+                case "RUC":
+                    nuevoClienteA.tipoDoc = tipoDoc;
+                    nuevoClienteA.numDoc = txtNumDocumentoAC.getText();
+                    if (!nuevoClienteA.esDocumentoValido()){
+                        JOptionPane.showMessageDialog(null, "RUC incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
+                    }else{
+                        String campo = String.valueOf(cmbCampocClienteAC);
+                        switch(campo){
+                            case "Nombre":
+                                campoActualizar = "Nombre";
+                                break;
+                            case "Apellido":
+                                campoActualizar = "Apellido";
+                                break;
+                            case "Tipo de Documento":
+                                campoActualizar = "Tipo_de_Documento";
+                                break;
+                            case "Teléfono celular":
+                                campoActualizar = "Telefono_Celular";
+                                break;
+                            case "Dirección":
+                                break;
+                            case "Correo electrónico":
+                                break;
+                            case "Estado":
+                                break;
+                        }
+                    }
+                    break;
+                case "C.I.":
+                    break;
+                case "Pasaporte":
+                    break;
+                default:
+                    JOptionPane.showMessageDialog(null, "¡Seleccione una Opción!");
+                    break;
+            }
+            String campo = String.valueOf(cmbCampocClienteAC);
+            PreparedStatement pps;
+            
+            pps = cn.prepareStatement("UPDATE clientes SET Codigo_Único='"+codigo_unico+
+                    "', Nombre='"+ nombre +"', Carrera='"+ carrera 
+                    +"', FechaNacimientoEst='"+ fechaNacimiento +"', Facultad='"+
+                    facultad +"', Telefeno='"+ telefono
+                    +"', Email='"+ email +"' WHERE Codigo_Único='"
+                    + codigo_unico +"' ");   
+            pps.executeUpdate();
+            JOptionPane.showMessageDialog(null,"Datos Actualizados Correctamente");
+        } catch (SQLException e){
+            Logger.getLogger(InterfaseUno.class.getName()).log(Level.SEVERE,null,e);
+        }
+
+
+
+        
+
+
+
+
+        //----------------------------------------------------------------------
         ActualizarDatoCliente nuevaActualizacion = new ActualizarDatoCliente();
         nuevaActualizacion.setVisible(true);
         this.dispose();
+        //----------------------------------------------------------------------
     }//GEN-LAST:event_btnSiguienteACActionPerformed
 
     /**
