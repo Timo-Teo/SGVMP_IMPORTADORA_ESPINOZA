@@ -88,13 +88,14 @@ public class ActualizarDatoCliente extends javax.swing.JFrame {
 
         }
     }
-    
-    void actualizarInfo(String nuevoDato){
+
+    void actualizarInfo(String nuevoDato) {
         Conexion con = new Conexion();
         Connection cn = (Connection) con.conexion();
         com.mysql.jdbc.PreparedStatement pstm;
-        try{
+        try {
             switch (campo) {
+                /*
                 case "Nombre":
                     pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Nombre = ? WHERE Numero_de_Documento LIKE ?");
                     pstm.setString(1, nuevoDato);
@@ -109,41 +110,78 @@ public class ActualizarDatoCliente extends javax.swing.JFrame {
                     pstm.executeUpdate();
                     JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
                     break;
+                 */
                 case "Telefono_Celular":
-                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Telefono_Celular = ? WHERE Numero_de_Documento LIKE ?");
-                    pstm.setString(1, nuevoDato);
-                    pstm.setString(2, numDocumento);
-                    pstm.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    if (!MóduloClientes.nuevoClienteA.esTelefonoValido(nuevoDato)) {
+                        JOptionPane.showMessageDialog(null, "Nuevo Teléfono Celular Incorrecto - Corrija");
+                        txtNuevo.setText("");
+                    } else {
+                        pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Telefono_Celular = ? WHERE Numero_de_Documento LIKE ?");
+                        pstm.setString(1, nuevoDato);
+                        pstm.setString(2, numDocumento);
+                        pstm.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "¡Teléfono Celular del Cliente Actualzado Exitosamente!");
+                        //------------------------------------------------------
+                        MóduloClientes newMod = new MóduloClientes();
+                        newMod.setVisible(true);
+                        dispose();
+                        //------------------------------------------------------
+                    }
                     break;
                 case "Direccion":
-                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Direccion = ? WHERE Numero_de_Documento LIKE ?");
-                    pstm.setString(1, nuevoDato);
-                    pstm.setString(2, numDocumento);
-                    pstm.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    if (!MóduloClientes.nuevoClienteA.esDireccionValido(nuevoDato)) {
+                        JOptionPane.showMessageDialog(null, "Nueva Dirección Incorrecta - Corrija");
+                        txtNuevo.setText("");
+                    } else {
+                        pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Direccion = ? WHERE Numero_de_Documento LIKE ?");
+                        pstm.setString(1, nuevoDato);
+                        pstm.setString(2, numDocumento);
+                        pstm.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "¡Dirección del Cliente Actualzada Exitosamente!");
+                        MóduloClientes newMod = new MóduloClientes();
+                        newMod.setVisible(true);
+                        dispose();
+                        //------------------------------------------------------
+                    }
                     break;
                 case "Correo_Electronico":
-                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Correo_Electronico = ? WHERE Numero_de_Documento LIKE ?");
-                    pstm.setString(1, nuevoDato);
-                    pstm.setString(2, numDocumento);
-                    pstm.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    if (!MóduloClientes.nuevoClienteA.esCorreoValido(nuevoDato)) {
+                        JOptionPane.showMessageDialog(null, "Nuevo Correo Electrónico Incorrecto - Corrija");
+                        txtNuevo.setText("");
+                    } else {
+                        pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Correo_Electronico = ? WHERE Numero_de_Documento LIKE ?");
+                        pstm.setString(1, nuevoDato);
+                        pstm.setString(2, numDocumento);
+                        pstm.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "¡Correo Electrónico del Cliente Actualzado Exitosamente!");
+                        MóduloClientes newMod = new MóduloClientes();
+                        newMod.setVisible(true);
+                        dispose();
+                        //------------------------------------------------------
+                    }
                     break;
                 case "Estado":
-                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Estado = ? WHERE Numero_de_Documento LIKE ?");
-                    pstm.setString(1, nuevoDato);
-                    pstm.setString(2, numDocumento);
-                    pstm.executeUpdate();
-                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    if (!nuevoDato.equals("Activo") || !nuevoDato.equals("Inactivo")) {
+                        JOptionPane.showMessageDialog(null, "Nuevo Estado Incorrecto - Corrija");
+                        txtNuevo.setText("");
+                    } else {
+                        pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Estado = ? WHERE Numero_de_Documento LIKE ?");
+                        pstm.setString(1, nuevoDato);
+                        pstm.setString(2, numDocumento);
+                        pstm.executeUpdate();
+                        JOptionPane.showMessageDialog(null, "¡Estado del Cliente Actualzado Exitosamente!");
+                        MóduloClientes newMod = new MóduloClientes();
+                        newMod.setVisible(true);
+                        dispose();
+                        //------------------------------------------------------
+                    }
                     break;
             }
-            
-        }catch(Exception  e){
-            
+
+        } catch (Exception e) {
+
         }
-        
-        
+
     }
 
     /**
