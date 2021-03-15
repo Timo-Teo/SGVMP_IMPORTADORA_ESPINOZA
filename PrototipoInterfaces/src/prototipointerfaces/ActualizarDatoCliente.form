@@ -130,6 +130,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Actualizar Cliente"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActualizarClienteActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnAtrasAC2">
           <Properties>

@@ -7,7 +7,12 @@ package prototipointerfaces;
 
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+import com.mysql.jdbc.Statement;
+import java.lang.System.Logger;
+import java.lang.System.Logger.Level;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 
 /**
  *
@@ -18,7 +23,6 @@ public class MóduloClientes extends javax.swing.JFrame {
     Cliente nuevoCliente = new Cliente();
     static Cliente nuevoClienteA = new Cliente();
     static String campoActualizar;
-    
 
     /**
      * Creates new form Interfaz
@@ -26,7 +30,105 @@ public class MóduloClientes extends javax.swing.JFrame {
     public MóduloClientes() {
         initComponents();
         setLocationRelativeTo(null);
+        //mostrarTabla();
 
+    }
+    
+    void mostrarTabla(){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Tipo de Documento");
+        modelo.addColumn("Numero de Documento");
+        modelo.addColumn("Telefono Celular");
+        modelo.addColumn("Direccion");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Estado");
+        tblDatos.setModel(modelo);
+        
+        
+        String sql = "SELECT * FROM clientes";
+        
+        String datos[] = new String[8];
+        
+        Conexion con = new Conexion();
+        Connection cn = (Connection) con.conexion();
+        Statement st;
+        
+        try{
+            st = (Statement) cn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while(rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+                datos[5] = rs.getString(6);
+                datos[6] = rs.getString(7);
+                datos[7] = rs.getString(8);
+                modelo.addRow(datos);
+            }
+            tblDatos.setModel(modelo);
+        }catch(SQLException e){
+            //Logger.getLogger(MóduloClientes.class.getName()).log(Level.SEVERE, null, e);
+        }
+    }
+    
+    void mostrarInfo(String numeroDoc){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Tipo de Documento");
+        modelo.addColumn("Numero de Documento");
+        modelo.addColumn("Telefono Celular");
+        modelo.addColumn("Direccion");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Estado");
+        tblDatos.setModel(modelo);
+        
+        String sql = "SELECT * FROM clientes WHERE Numero_de_Documento LIKE ?";
+        String datos[] = new String[8];
+        
+        Conexion con = new Conexion();
+        Connection cn = (Connection) con.conexion();
+        PreparedStatement pst;
+        ResultSet rs;
+        
+        try{
+            pst = (PreparedStatement) cn.prepareStatement(sql);
+            pst.setString(1, numeroDoc);
+            rs = pst.executeQuery();
+            while(rs.next()){
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+                datos[5] = rs.getString(6);
+                datos[6] = rs.getString(7);
+                datos[7] = rs.getString(8);
+                modelo.addRow(datos);
+            }
+            tblDatos.setModel(modelo);
+            JOptionPane.showMessageDialog(null, datos[0]);
+        }catch(SQLException e){
+            
+        }
+    }
+    
+    void eliminarCliente(String numDoc){
+        Conexion con = new Conexion();
+        Connection cn = (Connection) con.conexion();
+        com.mysql.jdbc.PreparedStatement pstm;
+        try{
+            pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("delete from clientes WHERE Numero_de_Documento LIKE ?");
+            pstm.setString(1, numDoc);
+            pstm.executeUpdate();
+            JOptionPane.showMessageDialog(null, "Cliente eliminado con éxito");
+        }catch(Exception e){
+            
+        }
     }
 
     /**
@@ -207,7 +309,7 @@ public class MóduloClientes extends javax.swing.JFrame {
 
         jLabel5.setText("Campo");
 
-        cmbCampocClienteAC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Apellido", "Tipo de documento", "Teléfono celular", "Dirección", "Correo electrónico", "Estado" }));
+        cmbCampocClienteAC.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nombre", "Apellido", "Teléfono celular", "Dirección", "Correo electrónico", "Estado" }));
 
         btnSiguienteAC.setText("Siguiente");
         btnSiguienteAC.addActionListener(new java.awt.event.ActionListener() {
@@ -277,6 +379,11 @@ public class MóduloClientes extends javax.swing.JFrame {
         jLabel10.setText("Número de documento");
 
         btnConsultarCliente.setText("Consultar");
+        btnConsultarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarClienteActionPerformed(evt);
+            }
+        });
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED), "Datos"));
 
@@ -385,6 +492,11 @@ public class MóduloClientes extends javax.swing.JFrame {
         jLabel12.setText("Número de documento");
 
         btnEliminarCliente.setText("Eliminar Cliente");
+        btnEliminarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarClienteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -690,79 +802,159 @@ public class MóduloClientes extends javax.swing.JFrame {
 
     private void btnSiguienteACActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteACActionPerformed
         // TODO add your handling code here:
-        
-        Conexion con = new Conexion();
-        Connection cn = (Connection) con.conexion();
-        
-        
         try {
-            String tipoDoc = String.valueOf(cmbTipoDocumentoAC);
-            switch(tipoDoc){
-                case "RUC":
-                    nuevoClienteA.tipoDoc = tipoDoc;
+            String tipoDoc = String.valueOf(cmbTipoDocumentoAC.getSelectedItem());
+            nuevoClienteA.tipoDoc = tipoDoc;
+            switch (tipoDoc) {
+                case "C.I.":
                     nuevoClienteA.numDoc = txtNumDocumentoAC.getText();
-                    if (!nuevoClienteA.esDocumentoValido()){
-                        JOptionPane.showMessageDialog(null, "RUC incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
-                    }else{
-                        String campo = String.valueOf(cmbCampocClienteAC);
-                        switch(campo){
-                            case "Nombre":
-                                campoActualizar = "Nombre";
-                                break;
-                            case "Apellido":
-                                campoActualizar = "Apellido";
-                                break;
-                            case "Tipo de Documento":
-                                campoActualizar = "Tipo_de_Documento";
-                                break;
-                            case "Teléfono celular":
-                                campoActualizar = "Telefono_Celular";
-                                break;
-                            case "Dirección":
-                                break;
-                            case "Correo electrónico":
-                                break;
-                            case "Estado":
-                                break;
+                    if (nuevoClienteA.numDoc.length() < 10) {
+                        JOptionPane.showMessageDialog(null, "Número de cédula invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!nuevoClienteA.esDocumentoValido()) {
+                            JOptionPane.showMessageDialog(null, "Cédula incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                            txtNumDocumentoAC.setText("");
+                        } else {
+                            String campo = String.valueOf(cmbCampocClienteAC.getSelectedItem());
+                            switch (campo) {
+                                case "Nombre":
+                                    campoActualizar = "Nombre";
+                                    break;
+                                case "Apellido":
+                                    campoActualizar = "Apellido";
+                                    break;
+                                case "Teléfono celular":
+                                    campoActualizar = "Telefono_Celular";
+                                    break;
+                                case "Dirección":
+                                    campoActualizar = "Direccion";
+                                    break;
+                                case "Correo electrónico":
+                                    campoActualizar = "Correo_Electronico";
+                                    break;
+                                case "Estado":
+                                    campoActualizar = "Estado";
+                                    break;
+                            }
+                            JOptionPane.showMessageDialog(null, campoActualizar);
+                            //----------------------------------------------------------------------
+                            ActualizarDatoCliente nuevaActualizacion = new ActualizarDatoCliente();
+                            nuevaActualizacion.setVisible(true);
+                            this.dispose();
+                            //----------------------------------------------------------------------
                         }
                     }
                     break;
-                case "C.I.":
+                case "RUC":
+
                     break;
                 case "Pasaporte":
                     break;
-                default:
+                case "Seleccionar...":
                     JOptionPane.showMessageDialog(null, "¡Seleccione una Opción!");
                     break;
             }
-            String campo = String.valueOf(cmbCampocClienteAC);
-            PreparedStatement pps;
-            
-            pps = cn.prepareStatement("UPDATE clientes SET Codigo_Único='"+codigo_unico+
-                    "', Nombre='"+ nombre +"', Carrera='"+ carrera 
-                    +"', FechaNacimientoEst='"+ fechaNacimiento +"', Facultad='"+
-                    facultad +"', Telefeno='"+ telefono
-                    +"', Email='"+ email +"' WHERE Codigo_Único='"
-                    + codigo_unico +"' ");   
-            pps.executeUpdate();
-            JOptionPane.showMessageDialog(null,"Datos Actualizados Correctamente");
-        } catch (SQLException e){
-            Logger.getLogger(InterfaseUno.class.getName()).log(Level.SEVERE,null,e);
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e);
         }
 
 
-
-        
-
-
-
-
-        //----------------------------------------------------------------------
-        ActualizarDatoCliente nuevaActualizacion = new ActualizarDatoCliente();
-        nuevaActualizacion.setVisible(true);
-        this.dispose();
-        //----------------------------------------------------------------------
     }//GEN-LAST:event_btnSiguienteACActionPerformed
+
+    private void btnConsultarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarClienteActionPerformed
+        // TODO add your handling code here:
+        nuevoCliente.tipoDoc = String.valueOf(cmbTipoDocumentoCC.getSelectedItem());
+        nuevoCliente.numDoc = String.valueOf(txtNumDocumentoCC.getText());
+        switch(nuevoCliente.tipoDoc){
+            case "C.I.":
+                if (nuevoCliente.numDoc.length() < 10) {
+                        JOptionPane.showMessageDialog(null, "Número de cédula invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!nuevoCliente.esDocumentoValido()) {
+                            JOptionPane.showMessageDialog(null, "Cédula incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                            txtNumDocumentoAC.setText("");
+                        } else {
+                            mostrarInfo(nuevoCliente.numDoc);
+                        }
+                }
+                break;
+            case "RUC":
+                if (nuevoCliente.numDoc.length() < 10) {
+                        JOptionPane.showMessageDialog(null, "Número de cédula invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!nuevoCliente.esDocumentoValido()) {
+                            JOptionPane.showMessageDialog(null, "Cédula incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                            txtNumDocumentoAC.setText("");
+                        } else {
+                            //mostrarTabla();
+                            mostrarInfo(nuevoCliente.numDoc);
+                        }
+                }
+                break;
+            case "Pasaporte":
+                if (nuevoCliente.numDoc.length() < 10) {
+                        JOptionPane.showMessageDialog(null, "Número de cédula invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!nuevoCliente.esDocumentoValido()) {
+                            JOptionPane.showMessageDialog(null, "Cédula incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                            txtNumDocumentoAC.setText("");
+                        } else {
+                            //mostrarTabla();
+                            mostrarInfo(nuevoCliente.numDoc);
+                        }
+                }
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_btnConsultarClienteActionPerformed
+
+    private void btnEliminarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarClienteActionPerformed
+        // TODO add your handling code here:
+        nuevoCliente.tipoDoc = String.valueOf(cmbTipoDocumentoEC.getSelectedItem());
+        nuevoCliente.numDoc = String.valueOf(txtNumDocumentoEC.getText());
+        switch(nuevoCliente.tipoDoc){
+            case "C.I.":
+                if (nuevoCliente.numDoc.length() < 10) {
+                        JOptionPane.showMessageDialog(null, "Número de cédula invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!nuevoCliente.esDocumentoValido()) {
+                            JOptionPane.showMessageDialog(null, "Cédula incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                            txtNumDocumentoEC.setText("");
+                        } else {
+                            eliminarCliente(nuevoCliente.numDoc);
+                        }
+                }
+                break;
+            case "RUC":
+                if (nuevoCliente.numDoc.length() < 10) {
+                        JOptionPane.showMessageDialog(null, "Número de cédula invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!nuevoCliente.esDocumentoValido()) {
+                            JOptionPane.showMessageDialog(null, "Cédula incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                            txtNumDocumentoEC.setText("");
+                        } else {
+                            eliminarCliente(nuevoCliente.numDoc);
+                        }
+                }
+                break;
+            case "Pasaporte":
+                if (nuevoCliente.numDoc.length() < 10) {
+                        JOptionPane.showMessageDialog(null, "Número de cédula invalido", "Error", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        if (!nuevoCliente.esDocumentoValido()) {
+                            JOptionPane.showMessageDialog(null, "Cédula incorrecta", "Error", JOptionPane.WARNING_MESSAGE);
+                            txtNumDocumentoEC.setText("");
+                        } else {
+                            eliminarCliente(nuevoCliente.numDoc);
+                        }
+                }
+                break;
+            default:
+                break;
+        }
+    }//GEN-LAST:event_btnEliminarClienteActionPerformed
 
     /**
      * @param args the command line arguments

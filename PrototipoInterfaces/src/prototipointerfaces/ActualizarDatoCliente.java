@@ -5,11 +5,21 @@
  */
 package prototipointerfaces;
 
+import com.mysql.jdbc.Connection;
+import com.mysql.jdbc.Statement;
+import java.sql.*;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author santiago
  */
 public class ActualizarDatoCliente extends javax.swing.JFrame {
+
+    String numDocumento = MóduloClientes.nuevoClienteA.numDoc;
+    String tipoDocumento = MóduloClientes.nuevoClienteA.tipoDoc;
+    String campo = MóduloClientes.campoActualizar;
 
     /**
      * Creates new form ActualizarDatoCliente
@@ -17,6 +27,123 @@ public class ActualizarDatoCliente extends javax.swing.JFrame {
     public ActualizarDatoCliente() {
         initComponents();
         setLocationRelativeTo(null);
+        mostrarInfo(numDocumento);
+    }
+
+    void mostrarInfo(String numeroDoc) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Tipo de Documento");
+        modelo.addColumn("Numero de Documento");
+        modelo.addColumn("Telefono Celular");
+        modelo.addColumn("Direccion");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Estado");
+
+        String sql = "SELECT * FROM clientes WHERE Numero_de_Documento LIKE ?";
+        String datos[] = new String[8];
+
+        Conexion con = new Conexion();
+        Connection cn = (Connection) con.conexion();
+        com.mysql.jdbc.PreparedStatement pst;
+        ResultSet rs;
+
+        try {
+            pst = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement(sql);
+            pst.setString(1, numeroDoc);
+            rs = pst.executeQuery();
+            while (rs.next()) {
+                datos[0] = rs.getString(1);
+                datos[1] = rs.getString(2);
+                datos[2] = rs.getString(3);
+                datos[3] = rs.getString(4);
+                datos[4] = rs.getString(5);
+                datos[5] = rs.getString(6);
+                datos[6] = rs.getString(7);
+                datos[7] = rs.getString(8);
+                modelo.addRow(datos);
+            }
+            switch (campo) {
+                case "Nombre":
+                    txtActual.setText(datos[0]);
+                    break;
+                case "Apellido":
+                    txtActual.setText(datos[1]);
+                    break;
+                case "Telefono_Celular":
+                    txtActual.setText(datos[4]);
+                    break;
+                case "Direccion":
+                    txtActual.setText(datos[5]);
+                    break;
+                case "Correo_Electronico":
+                    txtActual.setText(datos[6]);
+                    break;
+                case "Estado":
+                    txtActual.setText(datos[7]);
+                    break;
+            }
+        } catch (SQLException e) {
+
+        }
+    }
+    
+    void actualizarInfo(String nuevoDato){
+        Conexion con = new Conexion();
+        Connection cn = (Connection) con.conexion();
+        com.mysql.jdbc.PreparedStatement pstm;
+        try{
+            switch (campo) {
+                case "Nombre":
+                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Nombre = ? WHERE Numero_de_Documento LIKE ?");
+                    pstm.setString(1, nuevoDato);
+                    pstm.setString(2, numDocumento);
+                    pstm.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    break;
+                case "Apellido":
+                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Apellido = ? WHERE Numero_de_Documento LIKE ?");
+                    pstm.setString(1, nuevoDato);
+                    pstm.setString(2, numDocumento);
+                    pstm.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    break;
+                case "Telefono_Celular":
+                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Telefono_Celular = ? WHERE Numero_de_Documento LIKE ?");
+                    pstm.setString(1, nuevoDato);
+                    pstm.setString(2, numDocumento);
+                    pstm.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    break;
+                case "Direccion":
+                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Direccion = ? WHERE Numero_de_Documento LIKE ?");
+                    pstm.setString(1, nuevoDato);
+                    pstm.setString(2, numDocumento);
+                    pstm.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    break;
+                case "Correo_Electronico":
+                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Correo_Electronico = ? WHERE Numero_de_Documento LIKE ?");
+                    pstm.setString(1, nuevoDato);
+                    pstm.setString(2, numDocumento);
+                    pstm.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    break;
+                case "Estado":
+                    pstm = (com.mysql.jdbc.PreparedStatement) cn.prepareStatement("update clientes set Estado = ? WHERE Numero_de_Documento LIKE ?");
+                    pstm.setString(1, nuevoDato);
+                    pstm.setString(2, numDocumento);
+                    pstm.executeUpdate();
+                    JOptionPane.showMessageDialog(null, "El campo "+campo+" ha sido actualizado exitosamente");
+                    break;
+            }
+            
+        }catch(Exception  e){
+            
+        }
+        
+        
     }
 
     /**
@@ -49,6 +176,11 @@ public class ActualizarDatoCliente extends javax.swing.JFrame {
         jLabel2.setText("Nuevo");
 
         btnActualizarCliente.setText("Actualizar Cliente");
+        btnActualizarCliente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarClienteActionPerformed(evt);
+            }
+        });
 
         btnAtrasAC2.setText("Atrás");
         btnAtrasAC2.addActionListener(new java.awt.event.ActionListener() {
@@ -124,6 +256,12 @@ public class ActualizarDatoCliente extends javax.swing.JFrame {
         nuevoModCli.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnAtrasAC2ActionPerformed
+
+    private void btnActualizarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarClienteActionPerformed
+        // TODO add your handling code here:
+        String nuevoDato = txtNuevo.getText();
+        actualizarInfo(nuevoDato);
+    }//GEN-LAST:event_btnActualizarClienteActionPerformed
 
     /**
      * @param args the command line arguments
